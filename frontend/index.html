@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkyVision-DL</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <div>
+        <p class="eyebrow">SkyVision-DL</p>
+        <h1>Facade Glass Inspection</h1>
+      </div>
+
+      <form id="inspection-form" class="form">
+        <label>
+          Video
+          <input id="video" name="video" type="file" accept=".mp4,.avi,video/mp4,video/x-msvideo" required>
+        </label>
+
+        <div class="grid">
+          <label>
+            Sample FPS
+            <input id="sample_fps" name="sample_fps" type="number" min="0.1" step="0.1" value="1.0">
+          </label>
+          <label>
+            Confidence
+            <input id="confidence" name="confidence" type="number" min="0.01" max="0.99" step="0.01" value="0.25">
+          </label>
+          <label>
+            Device
+            <input id="device" name="device" type="text" value="0">
+          </label>
+          <label>
+            Model Path
+            <input id="model_path" name="model_path" type="text" placeholder="models/weights/best.pt">
+          </label>
+        </div>
+
+        <button id="submit-button" type="submit">Run Inspection</button>
+      </form>
+    </section>
+
+    <section id="status" class="status" hidden></section>
+
+    <section id="results" class="results" hidden>
+      <div class="summary">
+        <h2>Inspection Results</h2>
+        <div id="summary-grid" class="summary-grid"></div>
+      </div>
+
+      <div class="links">
+        <a id="json-report" href="#" target="_blank" rel="noreferrer">JSON Report</a>
+        <a id="html-report" href="#" target="_blank" rel="noreferrer">HTML Report</a>
+      </div>
+
+      <div id="frames" class="frames"></div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
+

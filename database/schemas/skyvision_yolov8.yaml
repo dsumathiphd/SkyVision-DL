@@ -1,0 +1,13 @@
+path: ../../models/datasets/processed
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: broken_glass
+  1: crack
+  2: fracture
+  3: water_leakage
+  4: surface_stain
+  5: delamination
+  6: repair_patch
