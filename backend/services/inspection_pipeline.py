@@ -1,4 +1,4 @@
-"""MVP inspection pipeline: upload video -> frames -> YOLO -> report."""
+"""Inspection pipeline: upload media -> frames -> YOLO -> report."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def run_video_inspection(
     video_path: str | Path,
     model_path: str | Path = DEFAULT_MODEL_PATH,
     sample_fps: float = 1.0,
-    confidence: float = 0.25,
+    confidence: float = 0.15,
     device: str = "0",
     inspection_id: str | None = None,
 ) -> InspectionResult:

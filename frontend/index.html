@@ -4,20 +4,262 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SkyVision-DL</title>
-  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/styles.css?v=dashboard-20261014-brand">
 </head>
 <body>
   <main class="shell">
-    <section class="panel">
-      <div>
+    <section class="hero-panel">
+      <div class="topbar">
+        <div>
+          <p class="eyebrow">SkyVision-DL</p>
+          <h1>AI-Powered Facade Glass Inspection Platform</h1>
+        </div>
+        <div id="session-box" class="session-box" hidden>
+          <span id="session-user"></span>
+          <button id="logout-button" class="secondary-button" type="button">Logout</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="auth-panel" class="panel auth-panel">
+      <div class="auth-header">
         <p class="eyebrow">SkyVision-DL</p>
-        <h1>Facade Glass Inspection</h1>
+        <h2>Secure Access</h2>
       </div>
 
-      <form id="inspection-form" class="form">
+      <div class="auth-tabs">
+        <button id="login-tab" class="tab-button active" type="button">Login</button>
+        <button id="register-tab" class="tab-button" type="button">Register</button>
+      </div>
+
+      <form id="login-form" class="form auth-form">
         <label>
+          Email
+          <input id="login-email" name="email" type="email" autocomplete="email" required>
+        </label>
+        <label>
+          Password
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button id="login-button" type="submit">Login</button>
+      </form>
+
+      <form id="register-form" class="form auth-form" hidden>
+        <label>
+          Full Name
+          <input id="register-name" name="full_name" type="text" autocomplete="name">
+        </label>
+        <label>
+          Email
+          <input id="register-email" name="email" type="email" autocomplete="email" required>
+        </label>
+        <label>
+          Password
+          <input id="register-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+        </label>
+        <button id="register-button" type="submit">Create Account</button>
+      </form>
+    </section>
+
+    <section id="dashboard-panel" class="dashboard-panel" hidden>
+      <div class="product-banner">
+        <div>
+          <p class="eyebrow">Operational Workspace</p>
+          <strong>Facade glass defect inspection workflow is ready for professional review.</strong>
+        </div>
+        <div class="product-banner-meta">
+          <span id="product-model-label">Model: models/weights/best.pt</span>
+          <span id="product-confidence-label">Confidence: 0.35</span>
+          <span id="product-device-label">Device: 0</span>
+        </div>
+      </div>
+
+      <div class="dashboard-header">
+        <div>
+          <p class="eyebrow">Maintenance Dashboard</p>
+          <h2>Maintenance Action Dashboard</h2>
+        </div>
+        <span id="dashboard-risk-label" class="risk-label risk-low">No urgent defects</span>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="dashboard-card accent-card">
+          <span>Panels Needing Attention</span>
+          <strong id="metric-unique-defects">0</strong>
+          <small>Estimated repair areas</small>
+        </article>
+        <article class="dashboard-card severity-card severity-critical">
+          <span>Immediate Safety Review</span>
+          <strong id="metric-critical-defects">0</strong>
+          <small>Immediate safety review</small>
+        </article>
+        <article class="dashboard-card severity-card severity-high">
+          <span>Repair Priority</span>
+          <strong id="metric-high-defects">0</strong>
+          <small>Plan repair action</small>
+        </article>
+        <article class="dashboard-card">
+          <span>Reports Available</span>
+          <strong id="metric-reports-ready">0</strong>
+          <small>Ready for maintenance review</small>
+        </article>
+      </div>
+
+      <div class="dashboard-grid secondary-dashboard-grid">
+        <article class="dashboard-card compact-card">
+          <span>Total Jobs</span>
+          <strong id="metric-total-inspections">0</strong>
+        </article>
+        <article class="dashboard-card compact-card">
+          <span>Completed Jobs</span>
+          <strong id="metric-completed">0</strong>
+        </article>
+        <article class="dashboard-card compact-card">
+          <span>Planning Reliability</span>
+          <strong id="metric-reliability">-</strong>
+        </article>
+        <article class="dashboard-card compact-card">
+          <span>Most Observed Defect</span>
+          <strong id="metric-primary-defect">-</strong>
+        </article>
+      </div>
+
+      <div class="workflow-panel">
+        <div class="workflow-header">
+          <p class="eyebrow">Live Processing</p>
+          <strong id="workflow-current-state">Ready</strong>
+        </div>
+        <div class="workflow-strip">
+          <div class="workflow-step active">Upload Media</div>
+          <div class="workflow-step" id="step-extract">Extract Frames</div>
+          <div class="workflow-step" id="step-yolo">YOLO</div>
+          <div class="workflow-step" id="step-results">Show Defects</div>
+          <div class="workflow-step" id="step-report">Generate Report</div>
+        </div>
+      </div>
+
+      <div class="dashboard-support-grid">
+        <article class="support-card">
+          <div class="section-header compact-header">
+            <div>
+              <p class="eyebrow">Inspection Settings</p>
+              <h3>Current Run Configuration</h3>
+            </div>
+          </div>
+          <dl class="settings-list">
+            <div><dt>Sample FPS</dt><dd id="setting-sample-fps">1.0</dd></div>
+            <div><dt>Confidence</dt><dd id="setting-confidence">0.35</dd></div>
+            <div><dt>Device</dt><dd id="setting-device">0</dd></div>
+            <div><dt>Model</dt><dd id="setting-model-path">models/weights/best.pt</dd></div>
+            <div><dt>Model Version</dt><dd id="setting-model-version">Loading...</dd></div>
+          </dl>
+        </article>
+
+        <article class="support-card">
+          <div class="section-header compact-header">
+            <div>
+              <p class="eyebrow">Severity Guide</p>
+              <h3>Maintenance Priority Meaning</h3>
+            </div>
+          </div>
+          <div class="severity-guide">
+            <div class="severity-row critical"><strong>Critical</strong><span>Immediate safety review</span></div>
+            <div class="severity-row high"><strong>High</strong><span>Repair planning required</span></div>
+            <div class="severity-row medium"><strong>Medium</strong><span>Inspect and monitor</span></div>
+            <div class="severity-row low"><strong>Low</strong><span>Cosmetic or routine review</span></div>
+          </div>
+        </article>
+      </div>
+
+      <article class="support-card defect-legend-card">
+        <div class="section-header compact-header">
+          <div>
+            <p class="eyebrow">Defect Legend</p>
+            <h3>Class Priority Reference</h3>
+          </div>
+        </div>
+        <div class="defect-legend">
+          <span><strong>Broken Glass</strong> High / Critical</span>
+          <span><strong>Crack</strong> Medium / High</span>
+          <span><strong>Fracture</strong> High / Critical</span>
+          <span><strong>Water Leakage</strong> Medium / High</span>
+          <span><strong>Surface Stain</strong> Low / Medium</span>
+          <span><strong>Delamination</strong> Medium / High</span>
+          <span><strong>Repair Patch</strong> Low / Medium</span>
+        </div>
+      </article>
+    </section>
+
+    <section id="inspection-panel" class="panel inspection-card" hidden>
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">New Inspection</p>
+          <h2>Video / Image Analysis</h2>
+        </div>
+      </div>
+      <form id="inspection-form" class="form">
+        <div class="empty-state inspection-empty-state">
+          Upload a facade video for frame-based inspection or a single facade image for rapid analysis.
+        </div>
+        <div class="metadata-grid">
+          <label>
+            Organization
+            <input id="organization_name" name="organization_name" type="text" placeholder="Organization / client name">
+          </label>
+          <label>
+            Project
+            <input id="project_name" name="project_name" type="text" placeholder="Project or site name">
+          </label>
+          <label>
+            Report Title
+            <input id="report_title" name="report_title" type="text" value="Facade Glass Inspection Report">
+          </label>
+          <label>
+            Inspector
+            <input id="inspector_name" name="inspector_name" type="text" placeholder="Inspector name">
+          </label>
+          <label>
+            Building
+            <input id="building_name" name="building_name" type="text" placeholder="Building name">
+          </label>
+          <label>
+            Floor / Level
+            <input id="floor_level" name="floor_level" type="text" placeholder="Floor or level">
+          </label>
+          <label>
+            Facade Side
+            <input id="facade_side" name="facade_side" type="text" placeholder="North / South / East / West">
+          </label>
+          <label>
+            Location
+            <input id="location" name="location" type="text" placeholder="Site location">
+          </label>
+          <label>
+            Inspection Date
+            <input id="inspection_date" name="inspection_date" type="date">
+          </label>
+          <label class="wide-field">
+            Remarks
+            <input id="remarks" name="remarks" type="text" placeholder="Inspection notes">
+          </label>
+        </div>
+        <div class="analysis-mode-toggle" aria-label="Analysis type">
+          <label>
+            <input id="mode-video" type="radio" name="analysis_mode" value="video" checked>
+            <span>Video Analysis</span>
+          </label>
+          <label>
+            <input id="mode-image" type="radio" name="analysis_mode" value="image">
+            <span>Image Analysis</span>
+          </label>
+        </div>
+        <label id="video-upload-field" class="upload-field">
           Video
           <input id="video" name="video" type="file" accept=".mp4,.avi,video/mp4,video/x-msvideo" required>
+        </label>
+        <label id="image-upload-field" class="upload-field" hidden>
+          Image
+          <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
         </label>
 
         <div class="grid">
@@ -27,7 +269,7 @@
           </label>
           <label>
             Confidence
-            <input id="confidence" name="confidence" type="number" min="0.01" max="0.99" step="0.01" value="0.25">
+            <input id="confidence" name="confidence" type="number" min="0.01" max="0.99" step="0.01" value="0.35">
           </label>
           <label>
             Device
@@ -35,7 +277,7 @@
           </label>
           <label>
             Model Path
-            <input id="model_path" name="model_path" type="text" placeholder="models/weights/best.pt">
+            <input id="model_path" name="model_path" type="text" value="models/weights/best.pt" placeholder="models/weights/best.pt">
           </label>
         </div>
 
@@ -45,22 +287,186 @@
 
     <section id="status" class="status" hidden></section>
 
+    <section id="job-panel" class="summary" hidden>
+      <div class="section-header">
+        <h2>Processing Status</h2>
+        <span id="job-stage-label" class="stage-label">Waiting</span>
+      </div>
+      <div class="progress-track">
+        <div id="job-progress-bar" class="progress-bar" style="width: 0%;"></div>
+      </div>
+      <div class="summary-grid">
+        <div class="metric">
+          <span>Job ID</span>
+          <strong id="job-id">-</strong>
+        </div>
+        <div class="metric">
+          <span>Status</span>
+          <strong id="job-status">-</strong>
+        </div>
+        <div class="metric">
+          <span>Progress</span>
+          <strong id="job-progress">0%</strong>
+        </div>
+        <div class="metric">
+          <span>Result</span>
+          <strong id="job-result-state">Waiting</strong>
+        </div>
+      </div>
+    </section>
+
     <section id="results" class="results" hidden>
       <div class="summary">
-        <h2>Inspection Results</h2>
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Completed Inspection</p>
+            <h2>Maintenance Findings</h2>
+          </div>
+          <span class="stage-label ready">Maintenance Report Ready</span>
+        </div>
         <div id="summary-grid" class="summary-grid"></div>
+        <div id="priority-list" class="priority-list"></div>
       </div>
 
-      <div class="links">
-        <a id="json-report" href="#" target="_blank" rel="noreferrer">JSON Report</a>
-        <a id="html-report" href="#" target="_blank" rel="noreferrer">HTML Report</a>
+      <div class="report-panel">
+        <div>
+          <p class="eyebrow">Download Reports</p>
+          <h3>Maintenance Report Package</h3>
+          <p id="report-status" class="report-status">Reports are available for completed inspections.</p>
+        </div>
+        <div class="links">
+          <a id="json-report" href="#" target="_blank" rel="noreferrer">JSON Report</a>
+          <a id="html-report" href="#" target="_blank" rel="noreferrer">HTML Report</a>
+          <a id="pdf-report" href="#" target="_blank" rel="noreferrer">PDF Report</a>
+          <a id="zip-report" href="#" target="_blank" rel="noreferrer">ZIP Package</a>
+        </div>
       </div>
 
       <div id="frames" class="frames"></div>
     </section>
+
+    <section id="history-panel" class="summary history-section" hidden>
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Archive</p>
+          <h2>Inspection History</h2>
+        </div>
+        <div class="section-actions">
+          <button id="export-history-csv" class="secondary-button" type="button">Export CSV</button>
+          <button id="refresh-history" class="secondary-button" type="button">Refresh</button>
+        </div>
+      </div>
+      <div class="history-tools">
+        <div class="history-filters" aria-label="Inspection history filters">
+          <button class="history-filter active" type="button" data-filter="all">All</button>
+          <button class="history-filter" type="button" data-filter="completed">Completed</button>
+          <button class="history-filter" type="button" data-filter="failed">Failed</button>
+          <button class="history-filter" type="button" data-filter="priority">Priority Cases</button>
+          <button class="history-filter" type="button" data-filter="archived">Archived</button>
+        </div>
+        <label class="history-search">
+          Search
+          <input id="history-search" type="search" placeholder="Job, media, status, date">
+        </label>
+      </div>
+      <div id="history-empty" class="empty-state">No inspections yet. Run a video or image inspection to build the maintenance history.</div>
+      <div class="table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Media</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Completed</th>
+              <th>Attention Areas</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="system-panel" class="summary system-section" hidden>
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">System</p>
+          <h2>System Status</h2>
+        </div>
+        <button id="refresh-system" class="secondary-button" type="button">Refresh Status</button>
+      </div>
+      <div id="system-status-grid" class="summary-grid"></div>
+    </section>
+
+    <section id="settings-panel" class="summary settings-section" hidden>
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Configuration</p>
+          <h2>Application Settings</h2>
+        </div>
+        <button id="download-backup" class="secondary-button" type="button">Download Backup</button>
+      </div>
+      <form id="settings-form" class="form">
+        <div class="grid settings-grid">
+          <label>
+            Default Sample FPS
+            <input id="settings-default-sample-fps" name="default_sample_fps" type="number" min="0.1" step="0.1">
+          </label>
+          <label>
+            Default Confidence
+            <input id="settings-default-confidence" name="default_confidence" type="number" min="0.01" max="0.99" step="0.01">
+          </label>
+          <label>
+            Default Device
+            <input id="settings-default-device" name="default_device" type="text">
+          </label>
+          <label>
+            Default Model Path
+            <input id="settings-default-model-path" name="default_model_path" type="text">
+          </label>
+          <label>
+            Max Video Upload MB
+            <input id="settings-max-video-upload-mb" name="max_video_upload_mb" type="number" min="1" step="1">
+          </label>
+          <label>
+            Max Image Upload MB
+            <input id="settings-max-image-upload-mb" name="max_image_upload_mb" type="number" min="1" step="1">
+          </label>
+        </div>
+        <div class="settings-actions">
+          <button id="save-settings" type="submit">Save Settings</button>
+          <span id="settings-status" class="report-status">Local defaults apply to new inspections.</span>
+        </div>
+      </form>
+    </section>
+
+    <section id="admin-panel" class="summary admin-section" hidden>
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Administration</p>
+          <h2>User Management</h2>
+        </div>
+        <button id="refresh-users" class="secondary-button" type="button">Refresh Users</button>
+      </div>
+      <div id="admin-empty" class="empty-state">Administrator tools are available only for admin users.</div>
+      <div class="table-wrap">
+        <table class="history-table admin-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-body"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v=dashboard-20261013-pro"></script>
 </body>
 </html>
-

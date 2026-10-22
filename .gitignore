@@ -18,3 +18,23 @@ models/weights/*.pt
 mlruns/
 runs/
 .env
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
+# Local datasets, media, model binaries, and export archives
+/Training Data/
+/Sample videos/
+/Ultralytics/
+/models/datasets/annotation_batches/
+/models/datasets/skyvision*_yolo/
+/models/datasets/processed_broken_glass_bbox/
+*.pt
+*.zip
+*.cache
+
+# Local environments and private configuration
+.venv/
+venv/
+.env.*
+!.env.example

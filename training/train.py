@@ -43,9 +43,12 @@ def parse_args() -> argparse.Namespace:
 
 def configure_environment(args: argparse.Namespace) -> None:
     os.environ.setdefault("ULTRALYTICS_SETTINGS", "sync=False")
+    mlflow_dir = PROJECT_ROOT / "models" / "runs" / "mlflow"
+    mlflow_dir.mkdir(parents=True, exist_ok=True)
+    default_mlflow_uri = f"sqlite:///{(mlflow_dir / 'mlflow.db').resolve().as_posix()}"
     os.environ["MLFLOW_TRACKING_URI"] = args.mlflow_uri or os.environ.get(
         "MLFLOW_TRACKING_URI",
-        str(PROJECT_ROOT / "models" / "runs" / "mlflow"),
+        default_mlflow_uri,
     )
 
 

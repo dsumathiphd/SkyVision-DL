@@ -26,6 +26,7 @@ class VideoMetadata:
     width: int
     height: int
     duration_seconds: float
+    media_type: str = "video"
 
     def to_dict(self) -> dict[str, float | int | str]:
         return asdict(self)
